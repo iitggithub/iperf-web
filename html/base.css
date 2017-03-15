@@ -1,0 +1,19 @@
+body {
+  height: 100%;
+  margin: 0 auto;
+  background: #e4e6e9;
+}
+
+h1 {
+	font: 23px/25px 'roboto-cond-reg', Arial, Helvetica, sans-serif;
+	color: #1c1c1c;
+	margin: 0 0 40px;
+	padding: 20px 0 0;
+	text-transform: uppercase;
+}
+
+p {
+	margin: 0 0 10px;
+	font: 16px/18px 'roboto-cond-light', Arial, Helvetica, sans-serif;
+}
+
