@@ -17,3 +17,10 @@ p {
 	font: 16px/18px 'roboto-cond-light', Arial, Helvetica, sans-serif;
 }
 
+a:hover {
+	
+}
+
+.form_container a p {display:none;}
+.form_container a:hover p {display:block;}
+.form_container a:hover {display:block;}
