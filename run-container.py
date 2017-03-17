@@ -53,8 +53,10 @@ container_id = container['Id']
 # Start the container
 client.start(container=container_id)
 
-# block (wait) until the container finishes running
-client.wait(container_id)
+# Output lines as they are received until the container
+# terminates
+for line in client.logs(container=container_id,stream=True):
+	print line.strip()
 
 # Whether it worked or not, delete the container
 client.remove_container(container_id)
