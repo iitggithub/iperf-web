@@ -6,9 +6,12 @@ MAINTAINER "The Ignorant IT Guy" <iitg@gmail.com>
 # docker containers from inside our iperf-web container.
 # Installing docker itself would take up 2 - 3 times the
 # space python/python-docker does.
-RUN apt-get update && apt-get install -y python \
+RUN apt-get update && apt-get install -y sudo \
+                                         python \
                                          python-docker \
     --no-install-recommends && rm -r /var/lib/apt/lists/*
+
+RUN echo "www-data ALL=(ALL) NOPASSWD:/usr/local/bin/run-container.py" >>/etc/sudoers
 
 # Make placeholder directories for the end user to mount against
 RUN mkdir -p /var/www/html/css \
