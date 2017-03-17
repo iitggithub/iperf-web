@@ -83,7 +83,7 @@ if ($params) {
       </p>
       <p>
         <div>
-          <input type="submit" name="submit" value="Submit" />
+          <input type="submit" name="Start" value="Start" />
       </p>
     </form>
     <p>
@@ -92,6 +92,12 @@ if ($params) {
     <p>
     Iperf 3 Documentation: <a href="https://iperf.fr/iperf-doc.php#3doc" target="_new">iPerf 3</a>
     </p>
+  </div>
+  <div>
+    <h1>Results</h1>
+  </div>
+  <div class="results">
+    <span class="output"></span>
   </div>
 </body>
 </html>
