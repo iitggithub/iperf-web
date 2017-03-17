@@ -9,7 +9,7 @@ There's two ways to get up and running, the easy way and the hard way.
 Fire up the web server.
 
 ```
-docker run -d --name iperf-web -v /data/iperf-web/logs:/var/log/httpd -v /data/iperf-web/css:/var/www/html/css iitgdocker/iperf-web:latest
+docker run -d --name iperf-web -v /var/run/docker.sock:/var/run/docker.sock -v /data/iperf-web/logs:/var/log/httpd -v /data/iperf-web/css:/var/www/html/css iitgdocker/iperf-web:latest
 ```
 
 ## The Easy Way (Docker Compose)
@@ -22,12 +22,17 @@ server:
   ports:
     - "80:80"
   volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
     - /data/iperf-web/css:/var/www/html/css
     - /data/iperf-web/images:/var/www/html/images
     - /data/iperf-web/logs:/var/log/httpd
 ```
 
 # Volumes
+
+## Docker socket (/var/run/docker.sock)
+
+You'll need to mount this in order for iperf-web to spawn iperf containers. Usually this will be stored under /var/run/docker.sock on your docker host.
 
 ## Log files
 
@@ -44,6 +49,10 @@ It's worthwhile adding a company logo etc. Mount a volume against /var/www/html/
 # Environment Variables
 
 None.
+
+# Getting Rid Of The Docker Container
+
+If you don't want to run iperf-web using a container, that's ok. Grab source.tar and untar on your own webserver (needs php). Just make sure you select "iperf" as your program type on the web interface.
 
 # The End
 
