@@ -9,8 +9,12 @@ $params  = (!empty($_REQUEST['params'])) ? escapeshellcmd($_REQUEST['params']) :
 $target  = (!empty($_REQUEST['target'])) ? escapeshellcmd($_REQUEST['target']) : NULL;
 $port    = (preg_match($port_regex,$_REQUEST['port'])) ? $_REQUEST['port'] : 5001;
 $typeSW  = ($_REQUEST['type']=='udp') ? ' -u ' : ' ';
-$logType = (empty($type)) ? 'tcp' : 'udp';
-$logFile = '/var/www/html/results/' . $logType . '_' . $port . '.log';
+
+$descriptorspec = array(
+   0 => array("pipe", "r"),   // stdin is a pipe that the child will read from
+   1 => array("pipe", "w"),   // stdout is a pipe that the child will write to
+   2 => array("pipe", "w")    // stderr is a pipe that the child will write to
+);
 
 switch ($prog) {
   case 'Iperf':
@@ -27,13 +31,24 @@ switch ($prog) {
 }
 
 if ($docker) {
-  $args    = $typeSW . '-c ' . $target . ' -p ' . $port . ' -o ' . $logFile . ' ' . $params;
+  $args    = $typeSW . '-c ' . $target . ' -p ' . $port . ' ' . $params;
   $command = $prog . ' --commands="' . $args . '"';
 } else {
-  $args    = $typeSW . '-c ' . $target . ' -p ' . $port . ' -o ' . $logFile . ' ' . $params;
+  $args    = $typeSW . '-c ' . $target . ' -p ' . $port . ' ' . $params;
   $command = $prog . $args;
 }
 
-proc_close(proc_open("$command", Array (), $foo));
+flush();
+$proc = proc_open($command, $descriptorspec, $pipes, realpath('./'), array());
+echo "<pre>";
+if (is_resource($proc)) {
+    while ($s = fgets($pipes[1])) {
+        print $s;
+        flush();
+    }
+}
+echo "</pre>";
+
+proc_close($proc);
 
 ?>
