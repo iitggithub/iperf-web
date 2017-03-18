@@ -2,8 +2,8 @@
 
 # Script to start docker iperf containers.
 #
-# Since python-docker is < 2, documentation for this can be found
-# http://docker-py.readthedocs.io/en/1.10.0/api/#containers
+# run20.py uses python docker api version >2. Documentation can be
+# found https://docker-py.readthedocs.io/en/stable/containers.html
 #
 # If you want to use this script the docker.sock socket needs to be
 # mounted on /var/run/docker.sock otherwise it will fail to connect.
@@ -48,5 +48,13 @@ image = args.image + ':' + args.tag
 # Connect to docker
 client = docker.DockerClient(base_url=args.socket,version=args.api)
 
-# Spawn the container and remove it once it's done
-client.containers.run(image, args.commands, remove=True)
+# Spawn the container and print the output to stdout
+# remove the container when done.
+# for mainly stolen from https://github.com/docker/docker-py/issues/919
+line = ''
+for char in client.containers.run(image, args.commands, remove=True):
+	if char == '\n':
+		print line
+		line = ''
+	else:
+		line = line + char
