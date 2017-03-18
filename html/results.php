@@ -26,7 +26,7 @@ switch ($prog) {
   break;
   default:
     $docker = true;
-    $prog   = 'sudo /usr/local/bin/run-container.py';
+    $prog   = 'sudo /usr/local/bin/run20.py';
   break;
 }
 

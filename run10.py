@@ -2,7 +2,8 @@
 
 # Script to start docker iperf containers.
 #
-# Since python-docker is < 2, documentation for this can be found
+# This script is compatible with python-docker =< 1.10, documentation
+# for this can be found 
 # http://docker-py.readthedocs.io/en/1.10.0/api/#containers
 #
 # If you want to use this script the docker.sock socket needs to be
@@ -28,6 +29,8 @@ def get_args():
             help='The path to the socket that will be used to connect and control docker')
 	parser.add_argument('-a', '--api', default='1.20', action='store', \
             help='The docker API version to use when connecting to the socket')
+	parser.add_argument('-d', '--docker', default=False, action='store_true', \
+            help='If this is set to 1, don\'t try to stream container log output.')
 
 	args = parser.parse_args()
 
@@ -36,15 +39,17 @@ def get_args():
 # Get command line arguments
 args = get_args()
 
+# Tells us whether we're a container without needing to use extra
+# modules
+iAmContainer = args.docker
+
 # create the full image name including the docker tag
 image = args.image + ':' + args.tag
 
 # Connect to docker
 client = Client(base_url=args.socket,version=args.api)
 
-# Spawn the container. Since this script is being launched as a background
-# job, there's no need to add detech=True to the list of arguments given to
-# client.create_container.
+# Spawn the container.
 container = client.create_container(image=image, command=args.commands)
 
 # Get the container ID
@@ -55,8 +60,15 @@ client.start(container=container_id)
 
 # Output lines as they are received until the container
 # terminates
-for line in client.logs(container=container_id,stream=True):
-	print line.strip()
+# This actually didn't work for some reason. The script would run endlessly
+# inside the container. Running the script on the docker host is ok.
+if iAmContainer:
+	client.wait(container=container_id)
+else:
+	# Output lines as they are received until the container
+	# terminates
+	for line in client.logs(container=container_id,stream=True):
+		print line.strip()
 
 # Whether it worked or not, delete the container
 client.remove_container(container_id)
