@@ -40,15 +40,12 @@ if ($docker) {
 
 flush();
 $proc = proc_open($command, $descriptorspec, $pipes, realpath('./'), array());
-echo "<pre>";
 if (is_resource($proc)) {
     while ($s = fgets($pipes[1])) {
         print $s;
         flush();
     }
 }
-
-echo "</pre>";
 
 proc_close($proc);
 
