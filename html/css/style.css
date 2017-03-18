@@ -13,14 +13,6 @@ h1 {
         text-transform: uppercase;
 }
 
-p {
-        margin: 0 0 10px;
-        font: 16px/18px 'roboto-cond-light', Arial, Helvetica, sans-serif;
-}
-
-.form_container {
-}
-
 /* Tooltip container */
 .tooltip {
     position: relative;
