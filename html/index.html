@@ -10,75 +10,108 @@
 <body>
   <img id="logo" src="images/logo.png">
   <h1>Iperf Speed Testing Web Interface</h1>
-  <div id="form_container">
-    <form id="formx"  method="post" action="results.php" target="iframex">
-      <p>
-        <div class="tooltip">
-          Iperf Command <span class="tooltiptext">Choose how to run iperf test.</span>
-        </div>
-        <div>
-          <select name="prog">
-            <option value="Docker" selected="selected">Docker</option>
-            <option value="Iperf" >Iperf</option>
-          </select>
-        </div>
-      </p>
-      <p>
-        <div class="tooltip">
-          Iperf Version <span class="tooltiptext">Select to use either Iperf 2.x or 3.x.</span>
-        </div>
-        <div>
-          <select name="version">
-            <option value="2" selected="selected">2</option>
-            <option value="3" >3</option>
-          </select>
-        </div>
-      </p>
-      <p>
-        <div class="tooltip">
-          Iperf Server <span class="tooltiptext">The DNS name or IP Address of the Iperf server you're connecting to</span>
-        </div>
-        <div>
-          <input name="target" type="text" maxlength="255" value=""/>
-        </div>
-      </p>
-      <p>
-        <div class="tooltip">
-          Port <span class="tooltiptext">The type of iperf test to be performed against the iperf server</span>
-        </div>
-        <div>
-          <input name="port" type="text" maxlength="255" value=""/>
-        </div>
-      </p>
-      <p>
-        <div class="tooltip">
-          Connection Type <span class="tooltiptext">The type of iperf test to be performed against the iperf server. Prior to iperf3, the order of the command line args mattered.</span>
-        </div>
-        <div>
-          <select name="type">
-            <option value="tcp" selected="selected">TCP</option>
-            <option value="udp" >UDP</option>
-          </select>
-        </div>
-      </p>
-      <p>
-        <div class="tooltip">
-          Parameters<span class="tooltiptext">command line arguments to be passed to the iperf command</span>
-        </div>
-        <div>
-          <input name="params" type="text" maxlength="255" value="-m -f m"/>
-        </div>
-      </p>
-      <p>
-        <div>
-          <input type="submit" name="Start" value="Start" />
-      </p>
-    </form>
+  <form id="formx"  method="post" action="results.php" target="iframex">
+    <table>
+      <tr>
+        <td>
+          <div class="tooltip">
+            Iperf Command <span class="tooltiptext">Choose how to run iperf test.</span>
+          </div>
+        </td>
+        <td>
+          <div>
+            <select name="prog">
+              <option value="Docker" selected="selected">Docker</option>
+              <option value="Iperf" >Iperf</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="tooltip">
+            Iperf Version <span class="tooltiptext">Select to use either Iperf 2.x or 3.x.</span>
+          </div>
+        </td>
+        <td>
+          <div>
+            <select name="version">
+              <option value="2" selected="selected">2</option>
+              <option value="3" >3</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="tooltip">
+            Iperf Server <span class="tooltiptext">The DNS name or IP Address of the Iperf server you're connecting to</span>
+          </div>
+        </td>
+        <td>
+          <div>
+            <input name="target" type="text" maxlength="255" value=""/>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="tooltip">
+            Port <span class="tooltiptext">The type of iperf test to be performed against the iperf server</span>
+          </div>
+        </td>
+        <td>
+          <div>
+            <input name="port" type="text" maxlength="255" value=""/>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="tooltip">
+            Connection Type <span class="tooltiptext">The type of iperf test to be performed against the iperf server. Prior to iperf3, the order of the command line args mattered.</span>
+          </div>
+        </td>
+        <td>
+          <div>
+            <select name="type">
+              <option value="tcp" selected="selected">TCP</option>
+              <option value="udp" >UDP</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="tooltip">
+            <label for="params" class="label">Parameters</label><span class="tooltiptext">command line arguments to be passed to the iperf command</span>
+          </div>
+        </td>
+        <td>
+          <div>
+            <input name="params" type="text" maxlength="255" value="-m -f m"/>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <div>
+            <input type="submit" name="Start" value="Start" />
+          </div>
+        </td>
+      </tr>
+    </table>
+  </form>
+  <div>
     <p>
-    Iperf 2 Documentation: <a href="https://iperf.fr/iperf-doc.php#2doc" target="_new">iPerf 2</a>
+      <a href="https://hub.docker.com/r/iitgdocker/iperf-web/" target="_new">Iperf-Web Documentation</a>
     </p>
     <p>
-    Iperf 3 Documentation: <a href="https://iperf.fr/iperf-doc.php#3doc" target="_new">iPerf 3</a>
+      <a href="https://iperf.fr/iperf-doc.php#2doc" target="_new">iPerf 2 Documentation</a>
+    </p>
+    <p>
+      <a href="https://iperf.fr/iperf-doc.php#3doc" target="_new">iPerf 3 Documentation</a>
     </p>
   </div>
   <div>
