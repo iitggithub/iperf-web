@@ -49,6 +49,18 @@ It's worthwhile adding a company logo etc. Mount a volume against /var/www/html/
 
 None.
 
+# Making The Container Start On Boot
+
+You'll need docker-compose for this or knowledge enough to edit a systemd service file.
+
+On the iperf-web github page for this image, you'll find a file called docker-iperf-web.service. Copy this file into /usr/lib/systemd/system.
+
+The service file expects the working directory (containing the docker-compose.yml file) to be located under /data/iperf-web. If yours is not here, you'll need to edit the docker-iperf-web.service service file and update the WorkingDirectory parameter.
+
+Once your done, run systemctl enable docker-iperf-web.
+
+Finally start the container by running systemctl start docker-iperf-web. Now your container will be brought up every time your system boots up.
+
 # Getting Rid Of The Docker Container
 
 If you don't want to run iperf-web using a container, that's ok. Grab the source.tar file from github and untar on your own webserver (needs php). Just make sure you select "iperf" as your program type on the web interface.
