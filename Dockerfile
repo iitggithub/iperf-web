@@ -16,7 +16,7 @@ RUN pip install docker
 
 # The web user needs to run the script as root in order to use
 # /var/run/docker.sock inside the container.
-RUN echo "www-data ALL=(ALL) NOPASSWD:/usr/local/bin/run-container.py" >>/etc/sudoers
+RUN echo "www-data ALL=(ALL) NOPASSWD:/usr/local/bin/run20.py,/usr/local/bin/run10.py" >>/etc/sudoers
 
 # Script to run new containers from inside an existing container
 # Requires /var/run/docker.sock to be mounted under /var/run/docker.sock

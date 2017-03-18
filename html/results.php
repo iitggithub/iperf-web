@@ -47,6 +47,7 @@ if (is_resource($proc)) {
         flush();
     }
 }
+
 echo "</pre>";
 
 proc_close($proc);
