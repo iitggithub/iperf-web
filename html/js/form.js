@@ -15,7 +15,7 @@
         if( $iframetxt != $div.text() )
         {
             console.log('rewritten!');
-            $div.text( $iframetxt );
+            $div.html( $iframetxt );
             setTimeout(function(){ check_div(); }, 500);
             count = 0;
         }
