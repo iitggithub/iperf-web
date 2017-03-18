@@ -6,10 +6,10 @@ There's two ways to get up and running, the easy way and the hard way.
 
 ## The Hard Way (Standalone)
 
-Fire up the web server.
+Fire up the web server using the minimum number of arguments required.
 
 ```
-docker run -d --name iperf-web -v /var/run/docker.sock:/var/run/docker.sock -v /data/iperf-web/logs:/var/log/httpd -v /data/iperf-web/css:/var/www/html/css iitgdocker/iperf-web:latest
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -p 80:80 iitgdocker/iperf-web
 ```
 
 ## The Easy Way (Docker Compose)
@@ -25,7 +25,6 @@ server:
     - /var/run/docker.sock:/var/run/docker.sock
     - /data/iperf-web/css:/var/www/html/css
     - /data/iperf-web/images:/var/www/html/images
-    - /data/iperf-web/logs:/var/log/httpd
 ```
 
 # Volumes
@@ -52,7 +51,7 @@ None.
 
 # Getting Rid Of The Docker Container
 
-If you don't want to run iperf-web using a container, that's ok. Grab source.tar and untar on your own webserver (needs php). Just make sure you select "iperf" as your program type on the web interface.
+If you don't want to run iperf-web using a container, that's ok. Grab the source.tar file from github and untar on your own webserver (needs php). Just make sure you select "iperf" as your program type on the web interface.
 
 # The End
 
