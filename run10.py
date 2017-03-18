@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python -W ignore
 
 # Script to start docker iperf containers.
 #
