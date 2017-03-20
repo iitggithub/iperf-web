@@ -25,7 +25,7 @@ COPY run20.py /usr/local/bin
 RUN chmod +x /usr/local/bin/run20.py
 
 COPY source.tar /tmp
-RUN tar xvf /tmp/source.tar -C /var/www/html >/dev/null
+RUN tar xvf /tmp/source.tar -C /var/www/html
 
 VOLUME [ "/var/www/html/images" ]
 
