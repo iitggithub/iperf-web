@@ -24,11 +24,11 @@ RUN echo "www-data ALL=(ALL) NOPASSWD:/usr/local/bin/run20.py,/usr/local/bin/run
 COPY run20.py /usr/local/bin
 RUN chmod +x /usr/local/bin/run20.py
 
+VOLUME [ "/var/www/html/css", "/var/www/html/images" ]
+
 COPY source.tar /tmp
 RUN tar xvf /tmp/source.tar -C /var/www/html >/dev/null
 
 EXPOSE 80
-
-VOLUME [ "/var/www/html/css", "/var/www/html/images" ]
 
 ENTRYPOINT ["apache2-foreground"]
