@@ -1,5 +1,9 @@
 <?php
 
+# Process the iperf-web form, spawn either a docker container 
+# or just run the iperf command on the localhost. print output
+# to stdout.
+
 $port_regex = '/[0-9]+/';
 
 $prog    = (!empty($_REQUEST['prog'])) ? $_REQUEST['prog'] : 'Docker';
