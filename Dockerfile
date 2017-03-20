@@ -27,8 +27,8 @@ RUN chmod +x /usr/local/bin/run20.py
 COPY source.tar /tmp
 RUN tar xvf /tmp/source.tar -C /var/www/html >/dev/null
 
-EXPOSE 80
+VOLUME [ "/var/www/html/images" ]
 
-VOLUME [ "/var/www/html/css", "/var/www/html/images" ]
+EXPOSE 80
 
 ENTRYPOINT ["apache2-foreground"]
