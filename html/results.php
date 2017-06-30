@@ -15,7 +15,7 @@ if ($type) {
     $prog    = '/bin/ping';
     $command = $prog . ' ' . $params . ' 2>&1';
   } else {
-    $prog    = '/bin/traceroute';
+    $prog    = '/usr/sbin/traceroute';
     $command = $prog . ' ' . $params . ' 2>&1';
   }
 
