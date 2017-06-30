@@ -6,6 +6,11 @@
             count = 0;
             return true;
         });
+        $('#formy').submit(function(){
+            setTimeout(function(){ check_div(); }, 500);
+            count = 0;
+            return true;
+        });
     });
 
     function check_div()

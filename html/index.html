@@ -15,6 +15,7 @@
     <h1>Iperf Web</h1>
   </div>
   <form id="formx" method="post" action="results.php" target="iframex">
+    <input id="typex" name="type" type="hidden" value="0"/>
     <table>
       <tr>
         <td>
@@ -108,18 +109,49 @@
     </table>
   </form>
   <div>
-    <h1>Documentation</h1>
+    <h1>Ping / Traceroute</h1>
   </div>
   <div>
-    <p>
-      <a href="https://hub.docker.com/r/iitgdocker/iperf-web/" target="_new">Iperf-Web</a>
-    </p>
-    <p>
-      <a href="https://iperf.fr/iperf-doc.php#2doc" target="_new">iPerf 2</a>
-    </p>
-    <p>
-      <a href="https://iperf.fr/iperf-doc.php#3doc" target="_new">iPerf 3</a>
-    </p>
+  <form id="formy" method="post" action="results.php" target="iframex">
+    <input id="typex" name="type" type="hidden" value="1"/>
+    <table>
+      <tr>
+        <td>
+          <div class="tooltip">
+            <label for="prog" class="label">Command</label><span class="tooltiptext">Choose which command you'd like to run.</span>
+          </div>
+        </td>
+        <td>
+          <div>
+            <select id="prog" name="prog">
+              <option value="Ping" selected="selected">Ping</option>
+              <option value="Traceroute" >Traceroute</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="tooltip">
+            <label for="params" class="label">Parameters</label><span class="tooltiptext">command line arguments to be passed to the selected command.</span>
+          </div>
+        </td>
+        <td>
+          <div>
+            <input id="params" name="params" type="text" maxlength="255" value=""/>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <div>
+            <input type="submit" name="Start" value="Start" />
+          </div>
+        </td>
+      </tr>
+    </table>
+  </form>
   </div>
   <div>
     <h1>Results</h1>
