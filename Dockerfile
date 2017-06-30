@@ -9,7 +9,6 @@ MAINTAINER "The Ignorant IT Guy" <iitg@gmail.com>
 RUN apt-get update && apt-get install -y sudo \
                                          python \
                                          python-pip \
-                                         ping \
                                          traceroute \
     --no-install-recommends && rm -r /var/lib/apt/lists/*
 
