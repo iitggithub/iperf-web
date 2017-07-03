@@ -27,16 +27,16 @@ if ($type) {
   $params  = (!empty($_REQUEST['params'])) ? escapeshellcmd($_REQUEST['params']) : NULL;
   $target  = (!empty($_REQUEST['target'])) ? escapeshellcmd($_REQUEST['target']) : NULL;
   $port    = (preg_match($port_regex,$_REQUEST['port'])) ? $_REQUEST['port'] : 5001;
-  $typeSW  = ($_REQUEST['type']=='udp') ? ' -u ' : ' ';
+  $proto   = ($_REQUEST['proto']=='udp') ? ' -u ' : ' ';
 
   if ($prog == 'Docker') {
     $prog    = 'sudo /usr/local/bin/run20.py';
     $args    = ($version == 2) ? '' : '-t 3.1.3';
-    $args   .= $typeSW . '-c ' . $target . ' -p ' . $port . ' ' . $params;
+    $args   .= $proto . '-c ' . $target . ' -p ' . $port . ' ' . $params;
     $command = $prog . ' --commands="' . $args . '"';
   } else {
     $prog    = ($version == 2) ? 'iperf' : 'iperf3';
-    $args    = $typeSW . '-c ' . $target . ' -p ' . $port . ' ' . $params;
+    $args    = $proto . '-c ' . $target . ' -p ' . $port . ' ' . $params;
     $command = $prog . $args;
   } 
 }
@@ -52,6 +52,8 @@ $descriptorspec = array(
 flush();
 $proc = proc_open($command, $descriptorspec, $pipes, realpath('./'), array());
 if (is_resource($proc)) {
+    print "Test execution begins...";
+    flush();
     while ($s = fgets($pipes[1])) {
         print $s;
         flush();
