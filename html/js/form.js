@@ -21,13 +21,13 @@
         {
             console.log('rewritten!');
             $div.html( $iframetxt );
-            setTimeout(function(){ check_div(); }, 500);
+            setTimeout(function(){ check_div(); }, 5000);
             count = 0;
         }
         else
         {
             count++;
-            if(count < 40) setTimeout(function(){ check_div(); }, 500);
+            if(count < 12) setTimeout(function(){ check_div(); }, 5000);
             else console.log('timed out');
         }       
     }
