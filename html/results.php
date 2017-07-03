@@ -4,6 +4,9 @@
 # or just run the iperf command on the localhost. print output
 # to stdout.
 
+# Increase PHP max execution time to allow for longer tests.
+set_time_limit(300);
+
 $type    = (!empty($_REQUEST['type'])) ? $_REQUEST['type'] : 0;
 
 if ($type) {
@@ -52,12 +55,14 @@ $descriptorspec = array(
 flush();
 $proc = proc_open($command, $descriptorspec, $pipes, realpath('./'), array());
 if (is_resource($proc)) {
-    print "Test execution begins...";
+    print "Test execution begins...\n";
     flush();
     while ($s = fgets($pipes[1])) {
         print $s;
         flush();
     }
+    print "Test execution has ended...\n";
+    flush();
 }
 
 proc_close($proc);
