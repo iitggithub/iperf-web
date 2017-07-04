@@ -61,6 +61,10 @@ if (is_resource($proc)) {
         print $s;
         flush();
     }
+    while ($s = fgets($pipes[2])) {
+        print $s;
+        flush();
+    }
     print "Test execution has ended...\n";
     flush();
 }
