@@ -2,14 +2,14 @@
     var count;
     $(function(){
         $('#formx').submit(function(){
-            setTimeout(function(){ check_div(); }, 500);
             $('#dynamic').empty();
+            setTimeout(function(){ check_div(); }, 500);
             count = 0;
             return true;
         });
         $('#formy').submit(function(){
-            setTimeout(function(){ check_div(); }, 500);
             $('#dynamic').empty();
+            setTimeout(function(){ check_div(); }, 500);
             count = 0;
             return true;
         });
