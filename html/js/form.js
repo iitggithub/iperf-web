@@ -3,11 +3,13 @@
     $(function(){
         $('#formx').submit(function(){
             setTimeout(function(){ check_div(); }, 500);
+            $('#dynamic').empty();
             count = 0;
             return true;
         });
         $('#formy').submit(function(){
             setTimeout(function(){ check_div(); }, 500);
+            $('#dynamic').empty();
             count = 0;
             return true;
         });
