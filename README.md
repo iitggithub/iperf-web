@@ -27,6 +27,16 @@ server:
     - /data/iperf-web/images:/var/www/html/images
 ```
 
+## The EVEN EASIER way...
+
+These scripts will install docker (via yum, apt-get etc), docker-compose 1.5.2, iperf-servers and iperf-web in one shot. Handy if you're setting up multiple machines.
+
+If systemd is available, it will install systemd services or init.d scripts.
+
+```
+curl -L https://raw.githubusercontent.com/iitggithub/iperf-web/master/install.sh | bash
+```
+
 # Volumes
 
 ## Docker socket (/var/run/docker.sock)

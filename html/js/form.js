@@ -1,15 +1,14 @@
 // Stolen from http://stackoverflow.com/questions/13250976/write-to-div-as-data-streams-in
+// modified to suit
     var count;
     $(function(){
         $('#formx').submit(function(){
-            $('#dynamic').empty();
-            setTimeout(function(){ check_div(); }, 500);
+            setTimeout(function(){ check_div(); }, 1000);
             count = 0;
             return true;
         });
         $('#formy').submit(function(){
-            $('#dynamic').empty();
-            setTimeout(function(){ check_div(); }, 500);
+            setTimeout(function(){ check_div(); }, 1000);
             count = 0;
             return true;
         });
@@ -17,19 +16,20 @@
 
     function check_div()
     {
+        var timeout = $('#timeout').val() * 1000;
         var $iframetxt = $('#iframex').contents().text();
         var $div = $('#dynamic');
         if( $iframetxt != $div.text() )
         {
             console.log('rewritten!');
             $div.html( $iframetxt );
-            setTimeout(function(){ check_div(); }, 5000);
-            count = 0;
+            setTimeout(function(){ check_div(); }, 1000);
         }
         else
         {
-            count++;
-            if(count < 12) setTimeout(function(){ check_div(); }, 5000);
-            else console.log('timed out');
-        }       
+            count = count + 1000;
+            console.log('timeout is ' + timeout + '.');
+            console.log('count is ' + count + '.');
+            if(count < timeout) setTimeout(function(){ check_div(); }, 1000);
+        }
     }
