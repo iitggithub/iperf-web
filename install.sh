@@ -64,6 +64,27 @@ done
 done
 for i in tcp udp; do for p in `seq 5001 5005`; do sudo ${SYSTEMCTL} start docker-iperf-server-${i}-${p}; done; done
 for i in tcp udp; do for p in `seq 5001 5005`; do sudo ${SYSTEMCTL} enable docker-iperf-server-${i}-${p}; done; done
+
+cat | tee /usr/lib/systemd/system/docker-iperf-web.service <<EOF
+[Unit]
+Description=Apache PHP web server for iperf
+After=docker.service
+
+[Service]
+Conflicts=shutdown.target
+StartLimitInterval=0
+Restart=always
+TimeoutStartSec=0
+Restart=on-failure
+WorkingDirectory=/data/iperf-web
+ExecStartPre=-/usr/local/bin/docker-compose stop
+ExecStartPre=-/usr/local/bin/docker-compose pull
+ExecStart=/usr/local/bin/docker-compose up
+ExecStop=-/usr/local/bin/docker-compose stop
+
+[Install]
+WantedBy=multi-user.target
+EOF
 sudo ${SYSTEMCTL} start docker-iperf-web
 sudo ${SYSTEMCTL} enable docker-iperf-web
 else
