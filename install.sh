@@ -6,6 +6,7 @@ if [ -n "`which yum`" ]
   then
   sudo yum -y install docker
 elif [ -n "`which apt-get`" ]
+  then
   sudo apt-get update
   sudo apt-get install docker
 fi
