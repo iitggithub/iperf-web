@@ -1,6 +1,7 @@
 #! /bin/bash
 
 SYSTEMCTL="`which systemctl`"
+IPERF_VERSION="2.0.9"
 
 if [ -n "`which yum`" ]
   then
@@ -17,79 +18,56 @@ if [ ! -f "/usr/local/bin/docker-compose" ]
   sudo chmod 755 /usr/local/bin/docker-compose
 fi
 
-for i in tcp udp; do for p in `seq 5001 5005`; do mkdir -p /data/iperf-server-${i}-${p}; done; done
-for i in tcp udp; do for p in `seq 5001 5005`; do cat | tee /data/iperf-server-${i}-${p}/docker-compose.yml <<EOF
-x:
-  image: iitgdocker/iperf-server:2.0.9
-  ports:
-    - "${p}:${p}/${i}"
-EOF
+if [ ! -d "/data" ]
+  then
+  sudo mkdir /data
+  sudo chown `whoami` /data
+fi
+
+for i in tcp udp
+  do
+  for p in `seq 5001 5005`
+    do
+    mkdir -p /data/iperf-server-${i}-${p}
+    curl -o /data/iperf-server-${i}-${p}/docker-compose.yml https://raw.githubusercontent.com/iitggithub/iperf-server/master/docker-compose.yml.single
+    sed -i -e "s/    - \".*/    - \"${p}:${p}\/${i}\"/" \
+           -e "s/latest/${IPERF_VERSION}/" /data/iperf-server-${i}-${p}/docker-compose.yml
+  done
 done
-done
+
 mkdir /data/iperf-web
-cat | sudo tee /data/iperf-web/docker-compose.yml <<EOF
-server:
-  image: iitgdocker/iperf-web:latest
-  ports:
-    - "80:80"
-  volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-EOF
+curl -o /data/iperf-web/docker-compose.yml https://raw.githubusercontent.com/iitggithub/iperf-web/master/docker-compose.yml
 
 if [ -n "${SYSTEMCTL}" ]
-then
-sudo ${SYSTEMCTL} start docker
-sudo ${SYSTEMCTL} enable docker
-for i in tcp udp; do for p in `seq 5001 5005`; do cat | tee /usr/lib/systemd/system/docker-iperf-server-${i}-${p}.service <<EOF
-[Unit]
-Description=Iperf based speed test server
-After=docker.service
+  then
+  sudo ${SYSTEMCTL} start docker
+  sudo ${SYSTEMCTL} enable docker
+  for i in tcp udp
+    do
+    for p in `seq 5001 5005`
+      do
+      sudo curl -o /usr/lib/systemd/system/docker-iperf-server-${i}-${p}.service https://raw.githubusercontent.com/iitggithub/iperf-server/${IPERF_VERSION}/docker-iperf-server.service
+      sudo sed -i "s/iperf-server/iperf-server-${i}-${p}/" /usr/lib/systemd/system/docker-iperf-server-${i}-${p}.service
+    done
+  done
 
-[Service]
-Conflicts=shutdown.target
-StartLimitInterval=0
-Restart=always
-TimeoutStartSec=0
-Restart=on-failure
-WorkingDirectory=/data/iperf-server-${i}-${p}
-ExecStartPre=-/usr/local/bin/docker-compose stop
-ExecStartPre=-/usr/local/bin/docker-compose pull
-ExecStart=/usr/local/bin/docker-compose up
-ExecStop=-/usr/local/bin/docker-compose stop
+  sudo ${SYSTEMCTL} daemon-reload
 
-[Install]
-WantedBy=multi-user.target
-EOF
-done
-done
-for i in tcp udp; do for p in `seq 5001 5005`; do sudo ${SYSTEMCTL} start docker-iperf-server-${i}-${p}; done; done
-for i in tcp udp; do for p in `seq 5001 5005`; do sudo ${SYSTEMCTL} enable docker-iperf-server-${i}-${p}; done; done
+  for i in tcp udp
+    do
+    for p in `seq 5001 5005`
+      do
+      sudo ${SYSTEMCTL} start docker-iperf-server-${i}-${p}
+      sudo ${SYSTEMCTL} enable docker-iperf-server-${i}-${p}
+    done
+  done
 
-cat | tee /usr/lib/systemd/system/docker-iperf-web.service <<EOF
-[Unit]
-Description=Apache PHP web server for iperf
-After=docker.service
-
-[Service]
-Conflicts=shutdown.target
-StartLimitInterval=0
-Restart=always
-TimeoutStartSec=0
-Restart=on-failure
-WorkingDirectory=/data/iperf-web
-ExecStartPre=-/usr/local/bin/docker-compose stop
-ExecStartPre=-/usr/local/bin/docker-compose pull
-ExecStart=/usr/local/bin/docker-compose up
-ExecStop=-/usr/local/bin/docker-compose stop
-
-[Install]
-WantedBy=multi-user.target
-EOF
-sudo ${SYSTEMCTL} start docker-iperf-web
-sudo ${SYSTEMCTL} enable docker-iperf-web
+  curl -o /usr/lib/systemd/system/docker-iperf-web.service https://raw.githubusercontent.com/iitggithub/iperf-web/master/docker-iperf-web.service
+  sudo ${SYSTEMCTL} start docker-iperf-web
+  sudo ${SYSTEMCTL} enable docker-iperf-web
 else
-echo "for i in tcp udp; do for p in `seq 5001 5005`; do cd /data/iperf-server-${i}-${p} && /usr/local/bin/docker-compose up -d; done; done" >>/etc/rc.local
-echo "cd /data/iperf-web && /usr/local/bin/docker-compose up -d" >>/etc/rc.local
-for i in tcp udp; do for p in `seq 5001 5005`; do cd /data/iperf-server-${i}-${p} && /usr/local/bin/docker-compose up -d; done; done
-cd /data/iperf-web && /usr/local/bin/docker-compose up -d
+  echo "for i in tcp udp; do for p in `seq 5001 5005`; do cd /data/iperf-server-${i}-${p} && /usr/local/bin/docker-compose up -d; done; done" >>/etc/rc.local
+  echo "cd /data/iperf-web && /usr/local/bin/docker-compose up -d" >>/etc/rc.local
+  for i in tcp udp; do for p in `seq 5001 5005`; do cd /data/iperf-server-${i}-${p} && sudo /usr/local/bin/docker-compose up -d; done; done
+  cd /data/iperf-web && sudo /usr/local/bin/docker-compose up -d
 fi
