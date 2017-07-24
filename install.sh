@@ -30,7 +30,11 @@ for i in tcp udp
   for p in `seq 5001 5005`
     do
     mkdir -p /data/iperf-server-${i}-${p}
-    curl -o /data/iperf-server-${i}-${p}/docker-compose.yml https://raw.githubusercontent.com/iitggithub/iperf-server/master/docker-compose.yml.single-use
+    curl -o /data/iperf-server-${i}-${p}/docker-compose.yml https://raw.githubusercontent.com/iitggithub/iperf-server/master/docker-compose.yml.single-use || {
+      echo "Failed to download single use service file. Installation halted..."
+      rm -f /data/iperf-server-${i}-${p}/docker-compose.yml
+      exit 1
+    }
     sed -i -e "s/    - \".*/    - \"${p}:${p}\/${i}\"/" \
            -e "s/latest/${IPERF_VERSION}/" /data/iperf-server-${i}-${p}/docker-compose.yml
   done
