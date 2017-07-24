@@ -15,13 +15,13 @@ fi
 if [ ! -f "/usr/local/bin/docker-compose" ]
   then
   curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` -o docker-compose
-  sudo mv docker-compose /usr/local/bin/docker-compose
+  sudo mv -f docker-compose /usr/local/bin/docker-compose
   sudo chmod 755 /usr/local/bin/docker-compose
 fi
 
 if [ ! -d "/data" ]
   then
-  sudo mkdir /data
+  sudo mkdir -p /data
   sudo chown `whoami` /data
 fi
 
@@ -30,13 +30,13 @@ for i in tcp udp
   for p in `seq 5001 5005`
     do
     mkdir -p /data/iperf-server-${i}-${p}
-    curl -o /data/iperf-server-${i}-${p}/docker-compose.yml https://raw.githubusercontent.com/iitggithub/iperf-server/master/docker-compose.yml.single
+    curl -o /data/iperf-server-${i}-${p}/docker-compose.yml https://raw.githubusercontent.com/iitggithub/iperf-server/master/docker-compose.yml.single-use
     sed -i -e "s/    - \".*/    - \"${p}:${p}\/${i}\"/" \
            -e "s/latest/${IPERF_VERSION}/" /data/iperf-server-${i}-${p}/docker-compose.yml
   done
 done
 
-mkdir /data/iperf-web
+mkdir -p /data/iperf-web
 curl -o /data/iperf-web/docker-compose.yml https://raw.githubusercontent.com/iitggithub/iperf-web/master/docker-compose.yml
 
 if [ -n "${SYSTEMCTL}" ]
@@ -64,6 +64,7 @@ if [ -n "${SYSTEMCTL}" ]
   done
 
   curl -o /usr/lib/systemd/system/docker-iperf-web.service https://raw.githubusercontent.com/iitggithub/iperf-web/master/docker-iperf-web.service
+  sudo ${SYSTEMCTL} daemon-reload
   sudo ${SYSTEMCTL} start docker-iperf-web
   sudo ${SYSTEMCTL} enable docker-iperf-web
 else
