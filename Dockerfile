@@ -6,8 +6,8 @@ RUN apk update && apk add traceroute \
                           iperf \
                           iperf3
 
-COPY static .
-COPY templates .
+COPY static /static/
+COPY templates /templates/
 COPY app.py .
 
 EXPOSE 5000
