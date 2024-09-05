@@ -1,5 +1,5 @@
 [Unit]
-Description=Apache PHP web server for iperf
+Description=Web interface for Iperf/Ping/Traceroute
 After=docker.service
 
 [Service]

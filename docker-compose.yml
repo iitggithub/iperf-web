@@ -1,9 +1,4 @@
 server:
   image: iitgdocker/iperf-web:latest
   ports:
-    - "80:80"
-  volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-    - /data/iperf-web/css:/var/www/html/css
-    - /data/iperf-web/images:/var/www/html/images
-    - /data/iperf-web/logs:/var/log/httpd
+    - "5000:5000"

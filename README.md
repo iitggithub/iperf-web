@@ -1,4 +1,10 @@
-A docker container running Apache with PHP 5.6. This container is specifically designed to work with the iitgdocker iperf-server containers.
+An Alpine-based Python 3.12 Flask web server which allows you to execute iperf, iperf3, ping and traceroute commands from a web interface.
+
+# Requirements
+
+You must have a running iperf or iperf 3 server running somewhere in order to perform an iperf/iperf3 test to it.
+
+Obviously, you need network connectivity between the two hosts for any of the tests and for ping/traceroute; icmp needs to be permitted..
 
 # Getting Started
 
@@ -9,7 +15,7 @@ There's two ways to get up and running, the easy way and the hard way.
 Fire up the web server using the minimum number of arguments required.
 
 ```
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -p 80:80 iitgdocker/iperf-web
+sudo docker run --rm -p 5000:5000 iitgdocker/iperf-web
 ```
 
 ## The Easy Way (Docker Compose)
@@ -20,40 +26,8 @@ The github repo contains a docker-compose.yml you can use as a base. The docker-
 server:
   image: iitgdocker/iperf-web:latest
   ports:
-    - "80:80"
-  volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-    - /data/iperf-web/css:/var/www/html/css
-    - /data/iperf-web/images:/var/www/html/images
+    - "5000:5000"
 ```
-
-## The EVEN EASIER way...
-
-These scripts will install docker (via yum, apt-get etc), docker-compose 1.5.2, iperf-servers and iperf-web in one shot. Handy if you're setting up multiple machines.
-
-If systemd is available, it will install systemd services or init.d scripts.
-
-```
-curl -L https://raw.githubusercontent.com/iitggithub/iperf-web/master/install.sh | bash
-```
-
-# Volumes
-
-## Docker socket (/var/run/docker.sock)
-
-You'll need to mount this in order for iperf-web to spawn iperf containers. Usually this will be stored under /var/run/docker.sock on your docker host.
-
-## Log files
-
-You can access the default apache log file directory by mounting a volume against /var/log/httpd.
-
-## CSS override
-
-Mount a volume against /var/www/html/css and this will allow you to put a CSS file (must be named style.css). This allows you to re-brand the web interface with your own stylesheet.
-
-## Images
-
-It's worthwhile adding a company logo etc. Mount a volume against /var/www/html/images and throw your logo image (must be named logo.png) into the directory and let the web interface do the rest.
 
 # Environment Variables
 
@@ -73,7 +47,13 @@ Finally start the container by running systemctl start docker-iperf-web. Now you
 
 # Getting Rid Of The Docker Container
 
-If you don't want to run iperf-web using a container, that's ok. Grab the source.tar file from github and untar on your own webserver (needs php). Just make sure you select "iperf" as your program type on the web interface.
+If you don't want to run iperf-web using a container, that's ok.
+
+ All you need is the app.py python script, and the static and template directories and provided you have the python3 flask module installed via pip, you can simply run the web interface using the command below:
+
+```
+python3 app.py
+```
 
 # The End
 
