@@ -80,4 +80,4 @@ def run_test():
     return Response(run_command(command), mimetype='text/html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,host=0.0.0.0)
