@@ -5,33 +5,26 @@ content %}
     <div class="form-group">
         <label for="test_type">Test Type:</label>
         <select name="test_type" id="test_type" class="form-control" onchange="showTestFields()">
+            <option value="dig">Dig</option>
+            <option value="iperf" selected>IPerf</option>
+            <option value="mtr">MTR</option>
+            <option value="nc">Netcat Port Checker</option>
+            <option value="nslookup">Nslookup</option>
             <option value="ping">Ping</option>
             <option value="traceroute">Traceroute</option>
-            <option value="iperf">IPerf</option>
+
         </select>
     </div>
 
-    <!-- Ping fields -->
-    <div id="ping_fields" style="display: none;">
+    <!-- Dig fields -->
+    <div id="dig_fields" style="display: none;">
         <div class="form-group">
-            <label for="ping_target">Ping Target Address:</label>
-            <input type="text" name="ping_target" id="ping_target" class="form-control">
+            <label for="dig_target">Target Address:</label>
+            <input type="text" name="dig_target" id="dig_target" class="form-control">
         </div>
         <div class="form-group">
-            <label for="ping_parameters">Ping Parameters:</label>
-            <input type="text" name="ping_parameters" id="ping_parameters" class="form-control" value="-c4">
-        </div>
-    </div>
-
-    <!-- Traceroute fields -->
-    <div id="traceroute_fields" style="display: none;">
-        <div class="form-group">
-            <label for="traceroute_target">Traceroute Target Address:</label>
-            <input type="text" name="traceroute_target" id="traceroute_target" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="traceroute_parameters">Traceroute Parameters:</label>
-            <input type="text" name="traceroute_parameters" id="traceroute_parameters" class="form-control" value="">
+            <label for="dig_parameters">Dig Parameters:</label>
+            <input type="text" name="dig_parameters" id="dig_parameters" class="form-control" value="">
         </div>
     </div>
 
@@ -45,23 +38,95 @@ content %}
             </select>
         </div>
         <div class="form-group">
-            <label for="iperf_server">IPerf Server Address:</label>
-            <input type="text" name="iperf_server" id="iperf_server" class="form-control">
+            <label for="iperf_target">IPerf Server Address:</label>
+            <input type="text" name="iperf_target" id="iperf_target" class="form-control">
         </div>
         <div class="form-group">
-            <label for="port">Port:</label>
-            <input type="text" name="port" id="port" class="form-control" pattern="\d*">
+            <label for="iperf_port">Port:</label>
+            <input type="text" name="iperf_port" id="iperf_port" class="form-control" pattern="\d*">
         </div>
         <div class="form-group">
-            <label for="conn_type">Connection Type:</label>
-            <select name="conn_type" class="form-control">
+            <label for="iperf_conn_type">Connection Type:</label>
+            <select name="iperf_conn_type" class="form-control">
                 <option value="TCP">TCP</option>
                 <option value="UDP">UDP</option>
             </select>
         </div>
         <div class="form-group">
+            <label for="iperf_timeout">Timeout (Seconds):</label>
+            <input type="text" name="iperf_timeout" id="iperf_timeout" class="form-control" pattern="\d*" value="10">
+        </div>
+        <div class="form-group">
             <label for="iperf_parameters">IPerf Parameters:</label>
-            <input type="text" name="iperf_parameters" id="iperf_parameters" class="form-control" value="-f m -t 10">
+            <input type="text" name="iperf_parameters" id="iperf_parameters" class="form-control" value="--format m">
+        </div>
+    </div>
+
+    <!-- Mtr fields -->
+    <div id="mtr_fields" style="display: none;">
+        <div class="form-group">
+            <label for="mtr_target">Target Address:</label>
+            <input type="text" name="mtr_target" id="mtr_target" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="mtr_reportcycles">Report Cycles:</label>
+            <input type="text" name="mtr_reportcycles" id="mtr_reportcycles" class="form-control" pattern="\d*" value="200">
+        </div>
+        <div class="form-group">
+            <label for="mtr_parameters">MTR Parameters:</label>
+            <input type="text" name="mtr_parameters" id="mtr_parameters" class="form-control" value="-n -T">
+        </div>
+    </div>
+
+    <!-- nc fields -->
+    <div id="nc_fields" style="display: none;">
+        <div class="form-group">
+            <label for="nc_target">Target Address:</label>
+            <input type="text" name="nc_target" id="nc_target" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="nc_port">TCP Port:</label>
+            <input type="text" name="nc_port" id="nc_port" class="form-control" pattern="\d*">
+        </div>
+    </div>
+
+    <!-- Nslookup fields -->
+    <div id="nslookup_fields" style="display: none;">
+        <div class="form-group">
+            <label for="nslookup_target">Target Address:</label>
+            <input type="text" name="nslookup_target" id="nslookup_target" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="nslookup_dns_server">DNS Server:</label>
+            <input type="text" name="nslookup_dns_server" id="nslookup_dns_server" class="form-control" value="">
+        </div>
+    </div>
+
+    <!-- Ping fields -->
+    <div id="ping_fields" style="display: none;">
+        <div class="form-group">
+            <label for="ping_target">Target Address:</label>
+            <input type="text" name="ping_target" id="ping_target" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="ping_count">Ping Count:</label>
+            <input type="text" name="ping_count" id="ping_count" class="form-control" pattern="\d*" value="4">
+        </div>
+        <div class="form-group">
+            <label for="ping_parameters">Ping Parameters:</label>
+            <input type="text" name="ping_parameters" id="ping_parameters" class="form-control" value="">
+        </div>
+    </div>
+
+    <!-- Traceroute fields -->
+    <div id="traceroute_fields" style="display: none;">
+        <div class="form-group">
+            <label for="traceroute_target">Target Address:</label>
+            <input type="text" name="traceroute_target" id="traceroute_target" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="traceroute_parameters">Traceroute Parameters:</label>
+            <input type="text" name="traceroute_parameters" id="traceroute_parameters" class="form-control" value="--icmp">
         </div>
     </div>
 

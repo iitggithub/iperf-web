@@ -1,54 +1,81 @@
 function showTestFields() {
+    // Map of test types to the associated fields and required attributes
+    const fieldMap = {
+        'dig': {
+            fieldsToShow: ['dig_fields'],
+            requiredFields: ['dig_target'],
+            defaults: { 'dig_parameters': '+short' }
+        },
+        'iperf': {
+            fieldsToShow: ['iperf_fields'],
+            requiredFields: ['iperf_target', 'iperf_port', 'iperf_timeout'],
+            defaults: { 'iperf_parameters': '--format m', 'iperf_timeout': '10' }
+        },
+        'mtr': {
+            fieldsToShow: ['mtr_fields'],
+            requiredFields: ['mtr_target', 'mtr_reportcycles'],
+            defaults: { 'mtr_reportcycles': '200', 'mtr_parameters': '-n -T' }
+        },
+        'nc': {
+            fieldsToShow: ['nc_fields'],
+            requiredFields: ['nc_target', 'nc_port'],
+            defaults: {}
+        },
+        'nslookup': {
+            fieldsToShow: ['nslookup_fields'],
+            requiredFields: ['nslookup_target'],
+            defaults: {}
+        },
+        'ping': {
+            fieldsToShow: ['ping_fields'],
+            requiredFields: ['ping_target', 'ping_count'],
+            defaults: { 'ping_count': '4' }
+        },
+        'traceroute': {
+            fieldsToShow: ['traceroute_fields'],
+            requiredFields: ['traceroute_target'],
+            defaults: { 'traceroute_parameters': '--icmp'}
+        }
+    };
+
+    // Get the selected test type
     var testType = document.getElementById("test_type").value;
 
-    if (testType === 'ping') {
-        document.getElementById("ping_fields").style.display = 'block';
-        document.getElementById("traceroute_fields").style.display = 'none';
-        document.getElementById("iperf_fields").style.display = 'none';
+    // Hide all fields initially
+    const allFields = ['dig_fields', 'iperf_fields', 'mtr_fields', 'nc_fields', 'nslookup_fields', 'ping_fields', 'traceroute_fields'];
+    allFields.forEach(field => {
+        document.getElementById(field).style.display = 'none';
+    });
 
-        // Reset parameters and target for Ping
-        document.getElementById("ping_target").value = '';
-        document.getElementById("ping_parameters").value = '-c4';
+    // Remove 'required' from all input fields
+    const allInputFields = ['dig_target', 'iperf_target', 'iperf_port', 'iperf_timeout', 'mtr_target', 'mtr_reportcycles', 'nc_target', 'nc_port', 'nslookup_target', 'ping_target', 'ping_count', 'traceroute_target'];
+    allInputFields.forEach(field => {
+        document.getElementById(field).removeAttribute('required');
+    });
 
-        // Enable required for Ping, disable for others
-        document.getElementById("ping_target").setAttribute('required', 'required');
-        document.getElementById("traceroute_target").removeAttribute('required');
-        document.getElementById("iperf_server").removeAttribute('required');
-        document.getElementById("port").removeAttribute('required');
-    } else if (testType === 'traceroute') {
-        document.getElementById("ping_fields").style.display = 'none';
-        document.getElementById("traceroute_fields").style.display = 'block';
-        document.getElementById("iperf_fields").style.display = 'none';
+    // Set defaults and show relevant fields based on the selected test type
+    if (fieldMap[testType]) {
+        // Show the relevant fields
+        fieldMap[testType].fieldsToShow.forEach(field => {
+            document.getElementById(field).style.display = 'block';
+        });
 
-        // Reset parameters and target for Traceroute
-        document.getElementById("traceroute_target").value = '';
-        document.getElementById("traceroute_parameters").value = '';
+        // Set required attributes for relevant fields
+        fieldMap[testType].requiredFields.forEach(field => {
+            document.getElementById(field).setAttribute('required', 'required');
+        });
 
-        // Enable required for Traceroute, disable for others
-        document.getElementById("traceroute_target").setAttribute('required', 'required');
-        document.getElementById("ping_target").removeAttribute('required');
-        document.getElementById("iperf_server").removeAttribute('required');
-        document.getElementById("port").removeAttribute('required');
-    } else if (testType === 'iperf') {
-        document.getElementById("ping_fields").style.display = 'none';
-        document.getElementById("traceroute_fields").style.display = 'none';
-        document.getElementById("iperf_fields").style.display = 'block';
-
-        // Set default parameters for IPerf
-        document.getElementById("iperf_parameters").value = '-f m -i 5 -t 30';
-
-        // Enable required for IPerf, disable for others
-        document.getElementById("iperf_server").setAttribute('required', 'required');
-        document.getElementById("port").setAttribute('required', 'required');
-        document.getElementById("ping_target").removeAttribute('required');
-        document.getElementById("traceroute_target").removeAttribute('required');
+        // Apply default values if any
+        for (const [field, value] of Object.entries(fieldMap[testType].defaults)) {
+            document.getElementById(field).value = value;
+        }
     }
 }
 
 // Initialize fields visibility on page load
 window.onload = showTestFields;
 
-
+// Scroll the iframe automatically
 function scrollIframe() {
     var iframe = document.getElementById("output_frame");
     iframe.contentWindow.scrollTo(0, iframe.contentWindow.document.body.scrollHeight);
