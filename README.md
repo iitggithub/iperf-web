@@ -1,8 +1,8 @@
-An Alpine-based Python 3.12 Flask web server which allows you to execute iperf, iperf3, ping and traceroute commands from a web interface.
+An Alpine-based Python 3.12 Flask web server which allows you to execute iperf, iperf3, dig, nslookup, netcat, ping, and traceroute commands from a web interface.
 
 # Requirements
 
-You must have a running iperf or iperf 3 server running somewhere in order to perform an iperf/iperf3 test to it.
+You must have a running iperf or iperf 3 server running somewhere in order to perform an iperf/iperf3 test to it. You can also find public iperf3 servers at [https://github.com/R0GGER/public-iperf3-servers](https://github.com/R0GGER/public-iperf3-servers). It's highly recommended that you run your own so you can test end to end performance.
 
 Obviously, you need network connectivity between the two hosts for any of the tests and for ping/traceroute; icmp needs to be permitted..
 
@@ -31,7 +31,21 @@ server:
 
 # Environment Variables
 
-None.
+### IPERF\_WEB\_PORT
+
+Sets the TCP port the python flask app listens on.
+
+Possible values: number between 1025 and 65535
+
+Default: 5000
+
+### IPERF\_WEB\_DEBUG\_MODE
+
+Enables Flask app debug mode
+
+Possible values: True, False
+
+Default: False
 
 # Making The Container Start On Boot
 
