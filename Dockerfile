@@ -2,14 +2,15 @@ FROM python:3.12-alpine
 
 RUN pip install --no-cache-dir flask
 
-RUN apk update && apk add mtr \
-                          traceroute \
-                          bind-tools \
-                          iperf \
-                          iperf3
+RUN apk update && apk add --no-cache mtr \
+                                     traceroute \
+                                     bind-tools \
+                                     iperf \
+                                     iperf3
 
 # Security updates
 RUN apk upgrade libexpat
+RUN apk upgrade openssl
 
 COPY static /app/static/
 COPY templates /app/templates/
