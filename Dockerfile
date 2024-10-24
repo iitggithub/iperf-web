@@ -1,5 +1,7 @@
 FROM python:3.12-alpine
 
+LABEL maintainer="IITG <iitggithub@gmail.com>"
+
 RUN pip install --no-cache-dir flask
 
 RUN apk update && apk add --no-cache mtr \
