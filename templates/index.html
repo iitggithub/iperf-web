@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Network Test{% endblock %} {% block
 content %}
 <h1 class="mb-4">Network Test Utility</h1>
-<form action="/run_test" method="POST" target="output_frame">
+<form action="/run_test" method="POST" target="output_frame" onsubmit="showLoading()">
     <div class="form-group">
         <label for="test_type">Test Type:</label>
         <select name="test_type" id="test_type" class="form-control" onchange="showTestFields()">
@@ -129,8 +129,12 @@ content %}
             <input type="text" name="traceroute_parameters" id="traceroute_parameters" class="form-control" value="--icmp">
         </div>
     </div>
-
-    <button type="submit" class="btn btn-primary">Run Test</button>
+    <div class="button-wrapper">
+        <button type="submit" class="btn btn-primary">Run Test</button>
+        <div class="loading-spinner" id="loading-spinner">
+            <img src="/static/spinner.gif" alt="Loading..." />
+        </div>
+    </div>
 </form>
 
 <h2 class="mt-5">Test Output</h2>

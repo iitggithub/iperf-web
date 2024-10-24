@@ -81,5 +81,17 @@ function scrollIframe() {
     iframe.contentWindow.scrollTo(0, iframe.contentWindow.document.body.scrollHeight);
 }
 
-// Attach scrollIframe to the iframe's onload event
-document.getElementById("output_frame").onload = scrollIframe;
+// Loading animation functions
+function showLoading() {
+    document.getElementById("loading-spinner").style.display = "block";
+}
+
+function hideLoading() {
+    document.getElementById("loading-spinner").style.display = "none";
+}
+
+// Attach hideLoading to the iframe's onload event
+document.getElementById("output_frame").onload = function() {
+    hideLoading(); // Hide the loading animation
+    scrollIframe(); // Attach scrollIframe to the iframe's onload event
+};
