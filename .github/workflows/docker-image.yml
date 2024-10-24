@@ -33,6 +33,16 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64,linux/arm/v7,linux/arm64 -t iitgdocker/iperf-web:latest --push .
 
+      - name: push README to Dockerhub
+        uses: christian-korneck/update-container-description-action@v1
+        env:
+          DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_PASS: ${{ secrets.DOCKERHUB_TOKEN }}
+        with:
+          destination_container_repo: iitgdocker/iperf-web
+          provider: dockerhub
+          readme_file: 'README.md'
+
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
           DOCKER_BUILDKIT: 1
