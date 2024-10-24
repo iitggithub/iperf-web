@@ -1,4 +1,0 @@
-server:
-  image: iitgdocker/iperf-web:latest
-  ports:
-    - "5000:5000"

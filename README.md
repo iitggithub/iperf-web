@@ -1,32 +1,21 @@
 An Alpine-based Python 3.12 Flask web server which allows you to execute iperf, iperf3, dig, nslookup, netcat, ping, and traceroute commands from a web interface.
 
+All versions have been built with multi-architectural support enabled (amd64, arm64, arm/v7).
+
 # Requirements
 
-You must have a running iperf or iperf 3 server running somewhere in order to perform an iperf/iperf3 test to it. You can also find public iperf3 servers at [https://github.com/R0GGER/public-iperf3-servers](https://github.com/R0GGER/public-iperf3-servers). It's highly recommended that you run your own so you can test end to end performance.
+You must have an iperf or iperf 3 server running somewhere in order to perform a network throughput test from your iperf/iperf3 client. You can deploy one or more [iitgdocker/iperf-server](https://hub.docker.com/r/iitgdocker/iperf-server) docker containers if you wish to run your own iperf servers.
 
-Obviously, you need network connectivity between the two hosts for any of the tests and for ping/traceroute; icmp needs to be permitted..
+You can also find public iperf3 servers at [https://github.com/R0GGER/public-iperf3-servers](https://github.com/R0GGER/public-iperf3-servers). It's highly recommended that you run your own so you can test end to end performance.
+
+Obviously, you need network connectivity between the two hosts for any of the tests and for ping/traceroute; icmp needs to be permitted.
 
 # Getting Started
-
-There's two ways to get up and running, the easy way and the hard way.
-
-## The Hard Way (Standalone)
 
 Fire up the web server using the minimum number of arguments required.
 
 ```
-sudo docker run --rm -p 5000:5000 iitgdocker/iperf-web
-```
-
-## The Easy Way (Docker Compose)
-
-The github repo contains a docker-compose.yml you can use as a base. The docker-compose.yml is compatible with docker-compose 1.5.2+. Below is an example but you can always find the latest version on github.
-
-```
-server:
-  image: iitgdocker/iperf-web:latest
-  ports:
-    - "5000:5000"
+docker run -d --restart=always -name iperf-web -p 5000:5000 iitgdocker/iperf-web
 ```
 
 # Environment Variables
@@ -47,23 +36,25 @@ Possible values: True, False
 
 Default: False
 
-# Making The Container Start On Boot
-
-You'll need docker-compose for this or knowledge enough to edit a systemd service file.
-
-On the iperf-web github page for this image, you'll find a file called docker-iperf-web.service. Copy this file into /usr/lib/systemd/system.
-
-The service file expects the working directory (containing the docker-compose.yml file) to be located under /data/iperf-web. If yours is not here, you'll need to edit the docker-iperf-web.service service file and update the WorkingDirectory parameter.
-
-Once your done, run systemctl enable docker-iperf-web.
-
-Finally start the container by running systemctl start docker-iperf-web. Now your container will be brought up every time your system boots up.
-
 # Getting Rid Of The Docker Container
 
 If you don't want to run iperf-web using a container, that's ok.
 
- All you need is the app.py python script, and the static and template directories and provided you have the python3 flask module installed via pip, you can simply run the web interface using the command below:
+All you need from the github repository is the following files and directories:
+
+ * app.py
+ * static/
+ * template/
+
+You will then need to install the flask python module:
+
+```
+pip3 install flask
+```
+
+And any utilities not installed by default (this will depend on your os), but mtr, traceroute iperf and iperf3 are required at a minimum.
+
+Once you have all of the network utilities installed, you can start the flask app.
 
 ```
 python3 app.py
