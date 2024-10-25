@@ -2,16 +2,17 @@ FROM python:3.12-alpine
 
 LABEL maintainer="IITG <iitggithub@gmail.com>"
 
+RUN set -eux; \
+    apk update; \
+    apk add --no-cache mtr \
+                       traceroute \
+                       bind-tools \
+                       iperf \
+                       iperf3; \
+    apk upgrade libexpat openssl; \
+    rm -rf /var/cache/apk/*
+
 RUN pip install --no-cache-dir flask
-
-RUN apk update && apk add --no-cache mtr \
-                                     traceroute \
-                                     bind-tools \
-                                     iperf \
-                                     iperf3
-
-# Security updates
-RUN apk upgrade libexpat openssl
 
 COPY static /app/static/
 COPY templates /app/templates/
