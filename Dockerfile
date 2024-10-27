@@ -24,6 +24,7 @@ EXPOSE 5000
 # compatibility with Arm devices because they
 # can't execute ping, traceroute etc without
 # suid bit set.
+#chmod u+s /usr/bin/traceroute /bin/ping etc
 #RUN adduser -D iperf-web
 #RUN chown -R iperf-web:iperf-web /app
 #USER iperf-web
