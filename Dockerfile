@@ -4,27 +4,32 @@ LABEL maintainer="IITG <iitggithub@gmail.com>"
 
 RUN pip install --no-cache-dir flask
 
-RUN apk update && apk add --no-cache mtr \
-                                     traceroute \
-                                     bind-tools \
-                                     iperf \
-                                     iperf3
+RUN set -eux; \
+    mkdir -p /app/config; \
+    apk update; \
+    apk add --no-cache mtr \
+                       tcptraceroute \
+                       traceroute \
+                       bind-tools \
+                       iperf \
+                       iperf3; \
+    chmod u+s /usr/sbin/mtr /usr/bin/traceroute /usr/bin/tcptraceroute /bin/ping; \
+    rm -rf /var/cache/apk/*
 
 # Security updates
 RUN apk upgrade libexpat openssl
 
+COPY config/config_example.json /app/config/
 COPY static /app/static/
 COPY templates /app/templates/
 COPY app.py /app/
 
+VOLUME["/app/config"]
+
 EXPOSE 5000
 
-# This stuff satisfies Dockerhub but it breaks
-# compatibility with Arm devices because they
-# can't execute ping, traceroute etc without
-# suid bit set.
-#RUN adduser -D iperf-web
-#RUN chown -R iperf-web:iperf-web /app
-#USER iperf-web
+RUN adduser -D iperf-web
+RUN chown -R iperf-web:iperf-web /app
+USER iperf-web
 
 CMD ["python", "/app/app.py"]
