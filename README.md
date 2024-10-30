@@ -12,11 +12,80 @@ Obviously, you need network connectivity between the two hosts for any of the te
 
 # Getting Started
 
-Fire up the web server using the minimum number of arguments required.
+Run the web server using the minimum number of arguments required.
 
 ```
-docker run -d --restart=always -name iperf-web -p 5000:5000 iitgdocker/iperf-web
+sudo docker run -d --restart=always -name iperf-web -p 5000:5000 iitgdocker/iperf-web
 ```
+
+# How To Save Server Connection Details
+
+If you have a list of servers that you regularly perform testing against or you plan to deploy multiple iperf-web servers and perform testing between them, you can save the connection details in a list. You can then select a configuration and it will prefill the fields for that test type.
+
+![Server Configuration Details](https://github.com/iitggithub/iperf-web/blob/master/image.jpg?raw=true)
+
+You need to mount a directory from your docker host into the iperf-web docker container. This allows you to edit the config.json file from the docker host and ensure that the contents of the file persists between container restarts.
+
+In the example below, we mount the /opt/iperf-web/config directory on the docker host to the /app/config directory in the docker container.
+
+```
+sudo mkdir -p /opt/iperf-web/config
+sudo docker run -d --restart=always -name iperf-web -p 5000:5000 -v /opt/iperf-web/config:/app/config iitgdocker/iperf-web
+```
+
+2\. Configure the config.json file according to your requirements
+
+Note: An example has been provided in the config directory called config_example.json.
+
+You will need to know the name of the test ie dig, iperf, mtr, nc, nslookup, ping, traceroute etc and the name of each of the fields you wish to prefill.
+
+Because the test types and field names may change at any time, I recommend reviewing the [https://github.com/iitggithub/iperf-web/blob/master/templates/index.html](https://github.com/iitggithub/iperf-web/blob/master/templates/index.html) file directly.
+
+```
+{
+    "dig": [
+        {
+            "name": "ineedmyip.com",
+            "dig_target": "ineedmyip.com",
+            "dig_parameters": "+short"
+        },
+        {
+            "name": "ineedmyip.com reverse DNS",
+            "dig_target": "140.82.49.8",
+            "dig_parameters": "-x"
+        }
+    ],
+    "iperf": [
+        {
+            "name": "iperf test server 1",
+            "iperf_version": "3",
+            "iperf_target": "192.168.0.111",
+            "iperf_port": "5201",
+            "iperf_conn_type": "TCP",
+            "iperf_timeout": "10",
+            "iperf_parameters": "--format m"
+        },
+        {
+            "name": "another iperf test server",
+            "iperf_version": "2",
+            "iperf_target": "192.168.0.222",
+            "iperf_port": "5201",
+            "iperf_conn_type": "UDP",
+            "iperf_timeout": "15",
+            "iperf_parameters": "--bandwidth 10M"
+        }
+    ],
+    "ping": [
+        {
+            "name": "Google.com",
+            "ping_target": "google.com",
+            "ping_count": "4"
+        }
+    ]
+}
+```
+
+Using the configuration above, a dropdown box will appear when the Dig, Iperf or Ping test types are selected and allow you to select the appropriate configure based on the configuration name. Selecting a configration will automatically prefill those fields.
 
 # Environment Variables
 

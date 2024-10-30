@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response, jsonify
+from pathlib import Path
+import json
 import subprocess
 import select
 import shlex
@@ -82,6 +84,20 @@ debug_mode = str_to_boolean(os.getenv('IPERF_WEB_DEBUG_MODE', False))
 @app.route('/')
 def index():
     return render_template('index.html')
+
+# Route to obtain settings for a given test.
+@app.route('/get_settings/<test_type>')
+def get_settings(test_type):
+    configFile = "config/config.json"
+    if Path(configFile).is_file():
+        with open(configFile, 'r') as f:
+            settings = json.load(f)
+    
+        # Send only the relevant settings for the selected test_type
+        return jsonify(settings.get(test_type, []))
+    
+    # Config file doesn't exist. Return an empty array
+    return "[]"
 
 # Route to handle form submission and execute selected test
 @app.route('/run_test', methods=['POST'])

@@ -16,6 +16,14 @@ content %}
         </select>
     </div>
 
+    <!-- Configuration selector -->
+    <div class="form-group" id="configuration-wrapper" style="display: none;">
+        <label for="configurations">Load Details From Saved Configuration:</label>
+        <select id="configurations" class="form-control" onchange="loadSelectedConfiguration()">
+            <option value="">-- Select a Configuration --</option>
+        </select>
+    </div>
+
     <!-- Dig fields -->
     <div id="dig_fields" style="display: none;">
         <div class="form-group">

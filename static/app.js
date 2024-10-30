@@ -72,9 +72,6 @@ function showTestFields() {
     }
 }
 
-// Initialize fields visibility on page load
-window.onload = showTestFields;
-
 // Scroll the iframe automatically
 function scrollIframe() {
     var iframe = document.getElementById("output_frame");
@@ -89,6 +86,75 @@ function showLoading() {
 function hideLoading() {
     document.getElementById("loading-spinner").style.display = "none";
 }
+
+// Fetch settings for the selected test_type from the server
+function fetchSettings(testType) {
+    fetch(`/get_settings/${testType}`)
+        .then(response => response.json())
+        .then(data => {
+            populateConfigurations(data);
+        })
+        .catch(error => console.error('Error fetching settings:', error));
+}
+
+// Populate the configurations dropdown based on fetched data
+function populateConfigurations(settings) {
+    const configurationsWrapper = document.getElementById("configuration-wrapper");
+    const configurationsSelect = document.getElementById("configurations");
+
+    configurationsSelect.innerHTML = '<option value="">-- Select a Configuration --</option>';
+
+    if (settings.length > 0) {
+        settings.forEach((config, index) => {
+            const option = document.createElement("option");
+            option.value = index; // Use the index to identify the selected configuration
+            option.text = config.name; // Use the "name" field from the JSON data
+            configurationsSelect.add(option);
+        });
+        configurationsWrapper.style.display = "block"; // Show the entire wrapper if there are options
+    } else {
+        configurationsWrapper.style.display = "none"; // Hide the wrapper if there are no options
+    }
+}
+
+// Load the selected configuration into the form fields
+function loadSelectedConfiguration() {
+    const selectedIndex = document.getElementById("configurations").value;
+    const testType = document.getElementById("test_type").value;
+    
+    if (selectedIndex === "") return;
+
+    fetch(`/get_settings/${testType}`)
+        .then(response => response.json())
+        .then(data => {
+            const selectedConfig = data[selectedIndex];
+
+            // Populate form fields based on the selected configuration
+            Object.keys(selectedConfig).forEach(key => {
+                const input = document.getElementById(key);
+                if (input) {
+                    input.value = selectedConfig[key];
+                }
+            });
+        })
+        .catch(error => console.error('Error loading configuration:', error));
+}
+
+// Attach event to load configurations when the test_type changes
+document.getElementById("test_type").addEventListener("change", function () {
+    const testType = this.value;
+    fetchSettings(testType);
+});
+
+// Initialize fields visibility on page load
+//window.onload = showTestFields;
+
+// Call fetchSettings on page load to pre-fill configurations for the default test_type
+window.onload = function() {
+    const defaultTestType = document.getElementById("test_type").value;
+    fetchSettings(defaultTestType);
+    showTestFields(); // Ensure fields visibility is updated
+};
 
 // Attach hideLoading to the iframe's onload event
 document.getElementById("output_frame").onload = function() {
