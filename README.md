@@ -35,7 +35,7 @@ sudo docker run -d --restart=always -name iperf-web -p 5000:5000 -v /opt/iperf-w
 
 2\. Configure the config.json file according to your requirements
 
-Note: An example has been provided in the config directory called config_example.json.
+Note: An example has been provided in the config directory called config_example.json. You don't have to include every field name, just the fields you wish to change.
 
 You will need to know the name of the test ie dig, iperf, mtr, nc, nslookup, ping, traceroute etc and the name of each of the fields you wish to prefill.
 
