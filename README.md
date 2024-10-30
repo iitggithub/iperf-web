@@ -22,7 +22,7 @@ sudo docker run -d --restart=always -name iperf-web -p 5000:5000 iitgdocker/iper
 
 If you have a list of servers that you regularly perform testing against or you plan to deploy multiple iperf-web servers and perform testing between them, you can save the connection details in a list. You can then select a configuration and it will prefill the fields for that test type.
 
-![Server Configuration Details](https://github.com/iitggithub/iperf-web/blob/master/image.jpg?raw=true)
+![Server Configuration Details](https://github.com/iitggithub/iperf-web/blob/master/NTU_Server_Details.png?raw=true)
 
 You need to mount a directory from your docker host into the iperf-web docker container. This allows you to edit the config.json file from the docker host and ensure that the contents of the file persists between container restarts.
 
