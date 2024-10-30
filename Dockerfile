@@ -22,7 +22,7 @@ COPY static /app/static/
 COPY templates /app/templates/
 COPY app.py /app/
 
-VOLUME["/app/config"]
+VOLUME ["/app/config"]
 
 EXPOSE 5000
 
