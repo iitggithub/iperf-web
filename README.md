@@ -57,32 +57,51 @@ Because the test types and field names may change at any time, I recommend revie
     ],
     "iperf": [
         {
-            "name": "iperf test server 1",
+            "name": "Server 1",
             "iperf_version": "3",
-            "iperf_target": "192.168.0.111",
+            "iperf_target": "192.168.1.111",
             "iperf_port": "5201",
             "iperf_conn_type": "TCP",
             "iperf_timeout": "10",
             "iperf_parameters": "--format m"
         },
         {
-            "name": "another iperf test server",
+            "name": "Server 2",
             "iperf_version": "2",
-            "iperf_target": "192.168.0.222",
+            "iperf_target": "192.168.1.222",
             "iperf_port": "5201",
             "iperf_conn_type": "UDP",
             "iperf_timeout": "15",
             "iperf_parameters": "--bandwidth 10M"
         }
     ],
+    "nc": [
+        {
+            "name": "ineedmyip.com SSH port 22",
+            "nc_target": "ineedmyip.com",
+            "nc_port": "22"
+        }
+    ],
     "ping": [
         {
-            "name": "Google.com",
-            "ping_target": "google.com",
+            "name": "8.8.8.8",
+            "ping_target": "8.8.8.8",
             "ping_count": "4"
         }
     ]
 }
+```
+
+3. Restart the container if it's already running
+
+Note: This is required to make sure the container uses the updated image
+
+```
+sudo docker pull iitgdocker/iperf-web:latest
+sudo docker stop iperf-web
+sudo docker rm iperf-web
+sudo docker run -d --restart=always -name iperf-web -p 5000:5000 -v /opt/iperf-web/config:/app/config iitgdocker/iperf-web
+
 ```
 
 Using the configuration above, a dropdown box will appear when the Dig, Iperf or Ping test types are selected and allow you to select the appropriate configure based on the configuration name. Selecting a configration will automatically prefill those fields.
