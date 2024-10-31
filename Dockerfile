@@ -14,6 +14,8 @@ RUN set -eux; \
     chmod u+s /usr/sbin/mtr /usr/bin/traceroute /usr/bin/tcptraceroute /bin/ping; \
     rm -rf /var/cache/apk/*
 
+RUN pip install flask
+
 # Security updates
 RUN apk upgrade libexpat openssl
 
