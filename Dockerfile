@@ -32,4 +32,6 @@ RUN adduser -D iperf-web
 RUN chown -R iperf-web:iperf-web /app
 USER iperf-web
 
-CMD ["python", "/app/app.py"]
+WORKDIR /app
+
+CMD ["python", "app.py"]
