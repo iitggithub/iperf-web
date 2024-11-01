@@ -1,6 +1,8 @@
 An Alpine-based Python 3.12 Flask web server which allows you to execute iperf, iperf3, dig, nslookup, netcat, ping, and traceroute commands from a web interface.
 
-All versions have been built with multi-architectural support enabled (amd64, arm64, arm/v7).
+![Overview](https://github.com/iitggithub/iperf-web/blob/master/overview.png?raw=true)
+
+All versions have been built with multi-architectural support enabled (amd64, arm64, arm/v7). If you would like more architectures to be supported, please raise an issue on [https://github.com/iitggithub/iperf-web/issues](https://github.com/iitggithub/iperf-web/issues).
 
 # Requirements
 
@@ -101,7 +103,6 @@ sudo docker pull iitgdocker/iperf-web:latest
 sudo docker stop iperf-web
 sudo docker rm iperf-web
 sudo docker run -d --restart=always -name iperf-web -p 5000:5000 -v /opt/iperf-web/config:/app/config iitgdocker/iperf-web
-
 ```
 
 Using the configuration above, a dropdown box will appear when the Dig, Iperf or Ping test types are selected and allow you to select the appropriate configure based on the configuration name. Selecting a configration will automatically prefill those fields.
@@ -133,6 +134,7 @@ All you need from the github repository is the following files and directories:
  * app.py
  * static/
  * template/
+ * config/ (optional)
 
 You will then need to install the flask python module:
 
